@@ -1,0 +1,6 @@
+@TickrServer_HostAddress = http://localhost:5078
+
+GET {{TickrServer_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
