@@ -1,4 +1,7 @@
 <Solution>
+  <Folder Name="/Solution Items/">
+    <File Path="start.sh" />
+  </Folder>
   <Project Path="Application/Application.csproj" Id="7b228794-1f67-4b92-a824-9076cce9c2ca" />
   <Project Path="Core/Core.csproj" Id="9b52f2e9-dc44-4590-a966-aee4f20aaf45" />
   <Project Path="Infrastructure/Infrastructure.csproj" Id="288d8cda-9ae2-4415-8885-d2260a22b9b8" />
