@@ -1,6 +1,9 @@
 #!/bin/bash
-# Build and publish the TickrServer project
-dotnet publish TickrServer/TickrServer.csproj -c Release -o ./publish
+# install .NET first
+wget https://dot.net/v1/dotnet-install.sh -O dotnet-install.sh
+bash dotnet-install.sh --channel 10.0
+export PATH=$HOME/.dotnet:$PATH
 
-# Run the published DLL
+# build & run
+dotnet publish TickrServer/TickrServer.csproj -c Release -o ./publish
 dotnet ./publish/TickrServer.dll
