@@ -1,4 +1,6 @@
+using Application.Auth;
 using Core.Configuration;
+using Core.Interfaces;
 using Infrastructure.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +22,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
 // Add services to the container.
+builder.Services.AddScoped<ITestService, TestService>();
+
 var jwtSettings = builder.Configuration
     .GetSection("JwtSettings")
     .Get<JwtSettings>()
@@ -49,6 +53,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddControllers();
+
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
