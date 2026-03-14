@@ -1,8 +1,0 @@
-{
-  "build": {
-    "cmds": [ "dotnet publish TickrServer/TickrServer.csproj -c Release -o out" ]
-  },
-  "start": {
-    "cmd": "dotnet out/TickrServer.dll"
-  }
-}
