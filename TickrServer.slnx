@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Solution Items/">
+    <File Path="railpack.json" />
     <File Path="start.sh" />
   </Folder>
   <Project Path="Application/Application.csproj" Id="7b228794-1f67-4b92-a824-9076cce9c2ca" />
