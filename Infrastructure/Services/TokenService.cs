@@ -21,13 +21,12 @@ namespace Infrastructure.Services
             _audience = jwtSettings.Audience;
         }
 
-        public string GenerateAuthToken(int userId, string email, string username)
+        public string GenerateAuthToken(int userId, string email)
         {
             var claims = new List<Claim>
             {
                 new("sub", userId.ToString()),
                 new("email", email),
-                new("username", username),
                 new("token_type", TokenType.Authentication.ToString().ToLower())
             };
 

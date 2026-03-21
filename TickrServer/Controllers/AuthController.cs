@@ -1,4 +1,4 @@
-﻿using Core.DTOs.Requests;
+using Core.DTOs.Requests;
 using Core.Interfaces.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -39,48 +39,6 @@ namespace TickrServer.Controllers
             try
             {
                 var result = await _registerService.RegisterOrLoginGoogleAsync(request);
-                if (result.Success)
-                {
-                    return Ok(result);
-                }
-                else
-                {
-                    return BadRequest(result);
-                }
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { success = false, message = ex.Message });
-            }
-        }
-
-        [HttpPost("complete-profile")]
-        public async Task<IActionResult> CompleteProfile([FromBody] CompleteProfileRequest request)
-        {
-            var tokenType = User.FindFirst(TokenType.ProfileCompletion.ToString().ToLower())?.Value;
-            if (tokenType != TokenType.ProfileCompletion.ToString().ToLower())
-            {
-                return Unauthorized(new
-                {
-                    success = false,
-                    message = "Invalid token type"
-                });
-            }
-
-            var provider = User.FindFirst("provider")?.Value;
-            var providerUserId = User.FindFirst("provider_user_id")?.Value;
-            if (provider == null || providerUserId == null)
-            {
-                return Unauthorized(new
-                {
-                    success = false,
-                    message = "Invalid token"
-                });
-            }
-
-            try
-            {
-                var result = await _registerService.CompleteProfileAsync(request, provider, providerUserId);
                 if (result.Success)
                 {
                     return Ok(result);

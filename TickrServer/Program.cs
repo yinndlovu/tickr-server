@@ -29,8 +29,9 @@ builder.Services.AddScoped<IRegisterService, RegisterService>();
 builder.Services.AddScoped<ILoginService, LoginService>();
 builder.Services.AddScoped<IAppRepository, AppRepository>();
 builder.Services.AddScoped<ITokenService, TokenService>();
-builder.Services.AddScoped<IPasswordHasher, IPasswordHasher>();
-builder.Services.AddScoped<IPasswordValidator, IPasswordValidator>();
+builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
+builder.Services.AddScoped<IPasswordValidator, PasswordValidator>();
+builder.Services.AddScoped<IGoogleTokenVerifier, GoogleTokenVerifier>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserAuthRepository, UserAuthRepository>();
 
@@ -40,6 +41,15 @@ var jwtSettings = builder.Configuration
     ?? throw new InvalidOperationException("JwtSettings section is missing in configuration!");
 
 builder.Services.AddSingleton(jwtSettings);
+
+var googleSettings = builder.Configuration
+    .GetSection("GoogleAuthSettings")
+    .Get<GoogleAuthSettings>()
+    ?? new GoogleAuthSettings
+    {
+        ClientId = Environment.GetEnvironmentVariable("GOOGLE_WEB_CLIENT_ID") ?? string.Empty
+    };
+builder.Services.AddSingleton(googleSettings);
 
 builder.Services.AddAuthentication(options =>
 {

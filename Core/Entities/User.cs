@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 
 namespace Core.Entities
 {
@@ -7,6 +7,7 @@ namespace Core.Entities
         public int Id { get; set; }
         [Required]
         public string Name { get; set; } = null!;
+        public string? ProfilePictureUrl { get; set; }
         public DateTime CreatedAt = DateTime.UtcNow;
         public DateTime UpdatedAt = DateTime.UtcNow;
         public ICollection<UserAuth> AuthMethods { get; set; } = [];
