@@ -15,6 +15,12 @@ namespace Infrastructure.Repositories
             await _dbContext.Users.AddAsync(user);
         }
 
+        public async Task UpdateAsync(User user)
+        {
+            _dbContext.Users.Update(user);
+            await Task.CompletedTask;
+        }
+
         public async Task<User?> FindByEmail(string email)
         {
             var normalizedEmail = email.Trim().ToLowerInvariant();
