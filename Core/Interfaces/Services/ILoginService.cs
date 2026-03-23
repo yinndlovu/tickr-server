@@ -6,6 +6,6 @@ namespace Core.Interfaces.Services
 {
     public interface ILoginService
     {
-        Task<AuthResponse<UserDto>> LoginWithEmailOrUsernameAsync(LoginRequest request);
+        Task<AuthResponse<UserDto>> LoginWithEmailAsync(LoginRequest request);
     }
 }

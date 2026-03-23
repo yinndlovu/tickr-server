@@ -15,64 +15,37 @@ namespace TickrServer.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest request)
         {
-            try
+            var result = await _registerService.RegisterLocalAsync(request);
+            if (!result.Success)
             {
-                var result = await _registerService.RegisterLocalAsync(request);
-                if (result.Success)
-                {
-                    return Ok(result);
-                }
-                else
-                {
-                    return BadRequest(result);
-                }
+                return BadRequest(result);
             }
-            catch (Exception ex)
-            {
-                return BadRequest(new { success = false, message = ex.Message });
-            }
+            
+            return Ok(result);
         }
 
         [HttpPost("google")]
         public async Task<IActionResult> RegisterOrLoginGoogle([FromBody] GoogleAuthRequest request)
         {
-            try
+            var result = await _registerService.RegisterOrLoginGoogleAsync(request);
+            if (!result.Success)
             {
-                var result = await _registerService.RegisterOrLoginGoogleAsync(request);
-                if (result.Success)
-                {
-                    return Ok(result);
-                }
-                else
-                {
-                    return BadRequest(result);
-                }
+                return BadRequest(result);
             }
-            catch (Exception ex)
-            {
-                return BadRequest(new { success = false, message = ex.Message });
-            }
+
+            return Ok(result);
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            try
+            var result = await _loginService.LoginWithEmailAsync(request);
+            if (!result.Success)
             {
-                var result = await _loginService.LoginWithEmailOrUsernameAsync(request);
-                if (result.Success)
-                {
-                    return Ok(result);
-                }
-                else
-                {
-                    return BadRequest(result);
-                }
+                return BadRequest(result);
             }
-            catch (Exception ex)
-            {
-                return BadRequest(new { success = false, message = ex.Message });
-            }
+           
+            return Ok(result);
         }
 
         // test method

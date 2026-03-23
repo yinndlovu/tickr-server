@@ -12,7 +12,7 @@ namespace Application.Auth.Services
         private readonly IPasswordHasher _passwordHasher = passwordHasher;
         private readonly ITokenService _tokenService = tokenService;
 
-        public async Task<AuthResponse<UserDto>> LoginWithEmailOrUsernameAsync(LoginRequest request)
+        public async Task<AuthResponse<UserDto>> LoginWithEmailAsync(LoginRequest request)
         {
             var normalizedEmail = request.Email.Trim().ToLowerInvariant();
 

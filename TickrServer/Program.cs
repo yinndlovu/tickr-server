@@ -13,13 +13,10 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-var envConnection = Environment.GetEnvironmentVariable("DATABASE_URL");
-if (!string.IsNullOrEmpty(envConnection))
-{
-    connectionString = envConnection;
-}
+var connectionString =
+    builder.Configuration.GetConnectionString("DefaultConnection")
+    ?? builder.Configuration["DATABASE_URL"]
+    ?? throw new InvalidOperationException("Database connection string missing");
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
@@ -38,17 +35,25 @@ builder.Services.AddScoped<IUserAuthRepository, UserAuthRepository>();
 var jwtSettings = builder.Configuration
     .GetSection("JwtSettings")
     .Get<JwtSettings>()
-    ?? throw new InvalidOperationException("JwtSettings section is missing in configuration!");
+    ?? throw new InvalidOperationException("JwtSettings section is missing in configuration");
 
 builder.Services.AddSingleton(jwtSettings);
 
 var googleSettings = builder.Configuration
     .GetSection("GoogleAuthSettings")
     .Get<GoogleAuthSettings>()
-    ?? new GoogleAuthSettings
-    {
-        ClientId = Environment.GetEnvironmentVariable("GOOGLE_WEB_CLIENT_ID") ?? string.Empty
-    };
+    ?? new GoogleAuthSettings();
+
+googleSettings.ClientId =
+    Environment.GetEnvironmentVariable("GOOGLE_WEB_CLIENT_ID")
+    ?? builder.Configuration["GoogleAuthSettings:ClientId"]
+    ?? string.Empty;
+
+if (string.IsNullOrWhiteSpace(googleSettings.ClientId))
+{
+    throw new InvalidOperationException(
+        "Google auth ClientId is missing");
+}
 builder.Services.AddSingleton(googleSettings);
 
 builder.Services.AddAuthentication(options =>

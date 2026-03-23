@@ -28,18 +28,30 @@ namespace Application.Auth.Services
             var normalizedEmail = request.Email?.Trim();
             if (string.IsNullOrEmpty(normalizedEmail))
             {
-                throw new InvalidInputException("An email is required");
+                return new AuthResponse<UserDto>
+                {
+                    Success = false,
+                    Message = "Email is required"
+                };
             }
 
             var normalizedName = request.Name?.Trim();
             if (string.IsNullOrEmpty(normalizedName))
             {
-                throw new InvalidInputException("Name is required");
+                return new AuthResponse<UserDto>
+                {
+                    Success = false,
+                    Message = "Name is required"
+                };
             }
 
             if (string.IsNullOrEmpty(request.Password))
             {
-                throw new InvalidInputException("Password is required");
+                return new AuthResponse<UserDto>
+                {
+                    Success = false,
+                    Message = "Password is required"
+                };
             }
 
             normalizedEmail = normalizedEmail.ToLowerInvariant();
@@ -47,7 +59,11 @@ namespace Application.Auth.Services
             var localAuthExists = await _userRepository.UserEmailExists(normalizedEmail);
             if (localAuthExists)
             {
-                throw new AlreadyExistsException("Email already exists");
+                return new AuthResponse<UserDto>
+                {
+                    Success = false,
+                    Message = "Email already exists",
+                };
             }
 
             var existingAuth = await _userAuthRepository.FindUserAuthByEmail(normalizedEmail);
