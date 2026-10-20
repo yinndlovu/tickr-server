@@ -10,6 +10,8 @@ namespace Infrastructure.Data
         public DbSet<User> Users { get; set; }
         public DbSet<UserAuth> UserAuths { get; set; }
         public DbSet<UserSession> UserSessions { get; set; }
+        public DbSet<Habit> Habits { get; set; }
+        public DbSet<HabitSetting> HabitSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -45,6 +47,27 @@ namespace Infrastructure.Data
                 .WithMany(u => u.Sessions)
                 .HasForeignKey(s => s.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // habits are keyed by (user, client-generated id) so devices can create them offline
+            modelBuilder.Entity<Habit>(habit =>
+            {
+                habit.HasKey(h => new { h.UserId, h.Id });
+                habit.Property(h => h.Id).HasMaxLength(64);
+                habit.HasOne<User>()
+                    .WithMany()
+                    .HasForeignKey(h => h.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+
+            modelBuilder.Entity<HabitSetting>(setting =>
+            {
+                setting.HasKey(s => s.UserId);
+                setting.Property(s => s.MainHabitId).HasMaxLength(64);
+                setting.HasOne<User>()
+                    .WithOne()
+                    .HasForeignKey<HabitSetting>(s => s.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
         }
     }
 }

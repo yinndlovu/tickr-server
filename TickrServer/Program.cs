@@ -1,4 +1,5 @@
 using Application.Auth.Services;
+using Application.Sync;
 using Core.Configuration;
 using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
@@ -31,6 +32,8 @@ builder.Services.AddScoped<IPasswordValidator, PasswordValidator>();
 builder.Services.AddScoped<IGoogleTokenVerifier, GoogleTokenVerifier>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserAuthRepository, UserAuthRepository>();
+builder.Services.AddScoped<IHabitRepository, HabitRepository>();
+builder.Services.AddScoped<IHabitSyncService, HabitSyncService>();
 
 var jwtSettings = builder.Configuration
     .GetSection("JwtSettings")
